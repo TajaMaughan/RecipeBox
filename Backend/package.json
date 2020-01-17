@@ -1,0 +1,27 @@
+{
+  "name": "recipe-box-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.8.7"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TajaMaughan/RecipeBox.git"
+  },
+  "author": "Mataja Maughan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TajaMaughan/RecipeBox/issues"
+  },
+  "homepage": "https://github.com/TajaMaughan/RecipeBox#readme"
+}
