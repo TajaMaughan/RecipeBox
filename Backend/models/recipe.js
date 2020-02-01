@@ -3,22 +3,22 @@ const Schema = mongoose.Schema;
 
 const recipeSchema = new Schema(
 	{
-		Title: {
+		title: {
 			type: String,
 			required: true
-		},
-		imageUrl: {
-			type: String,
-			required: true
-		},
-		tags: {
-			type: String,
-			required: true
-		},
-		user: {
-			type: Schema.Types.ObjectId,
-			ref: 'User',
-			required: true
+		// },
+		// imageUrl: {
+		// 	type: String,
+		// 	required: true
+		// },
+		// tags: {
+		// 	type: String,
+		// 	required: true
+		// },
+		// user: {
+		// 	type: Schema.Types.ObjectId,
+		// 	ref: 'User',
+		// 	required: true
 		}
 	},
 	{ timestamps: true }
