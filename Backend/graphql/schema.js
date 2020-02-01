@@ -2,8 +2,10 @@ const { buildSchema } = require('graphql');
 
 module.exports = buildSchema (`
   type Recipe {
-    id: String
-    title: String
+    id: ID!
+    title: String!
+    url: String!
+    tags: String!
   }
 
   type RecipeBox {
@@ -12,10 +14,12 @@ module.exports = buildSchema (`
 
   input PostInputData{
     title: String!
+    url: String!
+    tags: String!
   }
 
   type RootQuery {
-    recipe: Recipe!
+    recipe(id: ID!): Recipe!
     recipes: RecipeBox!
   }
 
