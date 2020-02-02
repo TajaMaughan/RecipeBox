@@ -18,11 +18,11 @@ const recipeSchema = new Schema(
 		tags: {
 			type: String,
 			required: true
-		// },
-		// user: {
-		// 	type: Schema.Types.ObjectId,
-		// 	ref: 'User',
-		// 	required: true
+		},
+		user: {
+			type: Schema.Types.ObjectId,
+			ref: 'User',
+			required: false
 		}
 	},
 	{ timestamps: true }

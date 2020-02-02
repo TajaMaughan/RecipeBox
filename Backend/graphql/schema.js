@@ -1,7 +1,20 @@
 const { buildSchema } = require('graphql');
 
 module.exports = buildSchema (`
-  type Recipe {
+type User {
+  id: ID!
+  userName: String!
+  email: String!
+  password: String!
+  recipes: [Recipe!]
+}
+
+type AuthData {
+  userId: String!
+  token: String!
+}
+
+type Recipe {
     id: ID!
     title: String!
     url: String!
@@ -12,19 +25,27 @@ module.exports = buildSchema (`
     recipes: [Recipe]
   }
 
-  input PostInputData{
+  input CreateUserInputData {
+    userName: String!
+    email: String!
+    password: String!
+  }
+
+  input RecipeInputData{
     title: String!
     url: String!
     tags: String!
   }
 
   type RootQuery {
-    recipe(id: ID!): Recipe!
-    recipes: RecipeBox!
+    userLogin(email: String!, password: String!): AuthData!
+    getRecipe(id: ID!): Recipe!
+    getRecipes: RecipeBox!
   }
 
   type RootMutation {
-    postRecipe(postInput: PostInputData): Recipe!
+    createUser(userInput: CreateUserInputData): User!
+    postRecipe(recipeInput: RecipeInputData): Recipe!
   }
 
   schema {
