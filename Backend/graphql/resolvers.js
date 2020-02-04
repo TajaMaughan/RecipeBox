@@ -35,7 +35,10 @@ module.exports = {
 		});
 		const createdUser = await user.save();
 		console.log('User Created');
-		return createdUser;
+		return {
+			...createdUser.doc,
+			_id: createdUser._id.toString()
+		};
 	},
 	userLogin: async function({ email, password }) {
 		// query login($email: String!, $password: String!){
@@ -84,7 +87,12 @@ module.exports = {
 		});
 		const createdRecipe = await recipe.save();
 		console.log('Recipe saved');
-		return createdRecipe;
+		return {
+			...createdRecipe._doc,
+			_id: createdRecipe._id.toString(),
+			createdAt: createdRecipe.createdAt.toISOString(),
+			updatedAt: createdRecipe.updatedAt.toISOString()
+		};
 	},
 	getRecipes: async function() {
 		// {
@@ -103,7 +111,9 @@ module.exports = {
 			recipes: recipes.map(recipe => {
 				return {
 					...recipe._doc,
-					id: recipe._id.toString()
+					id: recipe._id.toString(),
+					createdAt: recipe.createdAt.toISOString(),
+					updatedAt: recipe.updatedAt.toISOString()
 				};
 			})
 		};
@@ -121,7 +131,36 @@ module.exports = {
 		console.log(recipe);
 		return {
 			...recipe._doc,
-			id: recipe._id.toString()
+			id: recipe._id.toString(),
+			createdAt: recipe.createdAt.toISOString(),
+			updatedAt: recipe.updatedAt.toISOString()
+		};
+	},
+	updateRecipe: async function({ id, recipeInput }) {
+		// mutation updateRecipe($id: ID!, $title: String!, $url: String!, $tags: String!){
+		// 	updateRecipe(id: $id, recipeInput:{
+		// 		title: $title
+		// 		url: $url
+		// 		tags: $tags
+		// 	}){
+		// 		id
+		// 	}
+		// }
+		const recipe = await Recipe.findById(id);
+		if (!recipe) {
+			console.log('No recipe found');
+			return;
+		}
+		recipe.title = recipeInput.title;
+		recipe.url = recipeInput.url;
+		recipe.tags = recipeInput.tags;
+		const updatedRecipe = await recipe.save();
+		console.log('Recipe updated!');
+		return {
+			...updatedRecipe._doc,
+			id: updatedRecipe._id.toString(),
+			createdAt: updatedRecipe.createdAt.toISOString(),
+			updatedAt: updatedRecipe.updatedAt.toISOString()
 		};
 	}
 };

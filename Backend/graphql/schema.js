@@ -19,6 +19,8 @@ type Recipe {
     title: String!
     url: String!
     tags: String!
+    createdAt: String!
+    updatedAt: String!
   }
 
   type RecipeBox {
@@ -46,6 +48,7 @@ type Recipe {
   type RootMutation {
     createUser(userInput: CreateUserInputData): User!
     postRecipe(recipeInput: RecipeInputData): Recipe!
+    updateRecipe(id: ID!, recipeInput: RecipeInputData): Recipe!
   }
 
   schema {
