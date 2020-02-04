@@ -162,5 +162,19 @@ module.exports = {
 			createdAt: updatedRecipe.createdAt.toISOString(),
 			updatedAt: updatedRecipe.updatedAt.toISOString()
 		};
+	},
+	deleteRecipe: async function({ id }) {
+		// mutation deleteRecipe($id: ID!){
+		// 	deleteRecipe(id: $id
+		// 	)
+		// }
+		const recipe = await Recipe.findById(id);
+		if (!recipe) {
+			console.log('No recipe found.');
+			return;
+		}
+		await Recipe.findByIdAndRemove(id);
+		console.log('Recipe deleted.');
+		return true;
 	}
 };

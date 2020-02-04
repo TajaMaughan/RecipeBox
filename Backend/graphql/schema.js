@@ -49,6 +49,7 @@ type Recipe {
     createUser(userInput: CreateUserInputData): User!
     postRecipe(recipeInput: RecipeInputData): Recipe!
     updateRecipe(id: ID!, recipeInput: RecipeInputData): Recipe!
+    deleteRecipe(id: ID!): Boolean
   }
 
   schema {

@@ -23,7 +23,7 @@ app.use(
 );
 
 mongoose
-	.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+	.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: true })
 	.then(result => {
 		console.log('Connected to database');
 		app.listen(PORT);
