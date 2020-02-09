@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const validator = require('validator');
 
 const Recipe = require('../models/recipe');
 const User = require('../models/user');
@@ -15,17 +16,36 @@ module.exports = {
 		// 		id
 		// 	}
 		// }
+		const errors = [];
+		if (!validator.isEmail(userInput.email)) {
+			errors.push({ message: 'Please enter a valid email address.' });
+		}
+		if (
+			validator.isEmpty(userInput.password) ||
+			!validator.isLength(userInput.password, { min: 6 })
+		) {
+			errors.push({ message: 'Password must be at least 6 characters' });
+		}
+		if (errors.length > 0) {
+			const error = new Error('Input is invalid');
+			error.data = errors;
+			error.code = 422;
+			console.log(errors)
+			throw error;
+		}
 		const existingEmail = await User.findOne({ email: userInput.email });
 		if (existingEmail) {
-			console.log('Email is already used');
-			return;
+			const error = new Error('Email is already used')
+			console.log(errors);
+			throw error;
 		}
 		const existingUserName = await User.findOne({
 			userName: userInput.userName
 		});
 		if (existingUserName) {
-			console.log('Username has already been used.');
-			return;
+			error = new Error('Username has already been used.')
+			console.log(errors);
+			throw error;
 		}
 		const hashedPass = await bcrypt.hash(userInput.password, 12);
 		const user = new User({
