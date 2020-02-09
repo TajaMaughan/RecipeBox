@@ -13,7 +13,7 @@ module.exports = {
 		// 		email: $email
 		// 		password: $password
 		// 	}){
-		// 		id
+		// 		_id
 		// 	}
 		// }
 		const errors = [];
@@ -30,13 +30,11 @@ module.exports = {
 			const error = new Error('Input is invalid');
 			error.data = errors;
 			error.code = 422;
-			console.log(errors)
 			throw error;
 		}
 		const existingEmail = await User.findOne({ email: userInput.email });
 		if (existingEmail) {
 			const error = new Error('Email is already used')
-			console.log(errors);
 			throw error;
 		}
 		const existingUserName = await User.findOne({
@@ -44,7 +42,6 @@ module.exports = {
 		});
 		if (existingUserName) {
 			error = new Error('Username has already been used.')
-			console.log(errors);
 			throw error;
 		}
 		const hashedPass = await bcrypt.hash(userInput.password, 12);
@@ -70,15 +67,16 @@ module.exports = {
 		const user = await User.findOne({ email: email });
 		console.log(user);
 		if (!user) {
-			console.log('No user found');
-			return;
+			const error = new Error('No user found.');
+			error.code = 401;
+			throw error;
 		}
 		const equalPass = await bcrypt.compare(password, user.password);
 		if (!equalPass) {
-			console.log('Password is incorrect');
-			return;
+			const error = new Error('Password is incorrect.');
+			error.code = 401;
+			throw error;
 		}
-		console.log('Password correct');
 		const token = jwt.sign(
 			{
 				userId: user._id.toString(),
@@ -97,7 +95,7 @@ module.exports = {
 		//     url: $url
 		//     tags: $tags
 		//   }){
-		//      id
+		//      _id
 		//   }
 		// }
 		const recipe = new Recipe({
@@ -118,7 +116,7 @@ module.exports = {
 		// {
 		//   getRecipes{
 		//     recipes{
-		//       id
+		//       _id
 		//       title
 		//       url
 		//       tags
@@ -131,7 +129,8 @@ module.exports = {
 			recipes: recipes.map(recipe => {
 				return {
 					...recipe._doc,
-					id: recipe._id.toString(),
+					
+					_id: recipe._id.toString(),
 					createdAt: recipe.createdAt.toISOString(),
 					updatedAt: recipe.updatedAt.toISOString()
 				};
@@ -140,8 +139,8 @@ module.exports = {
 	},
 	getRecipe: async function({ id }) {
 		// query fetchRecipe ($id: ID!){
-		//   recipe(id: $id){
-		//     id
+		//   getRecipe(id: $id){
+		//     _id
 		//     title
 		//     url
 		//     tags
@@ -151,7 +150,7 @@ module.exports = {
 		console.log(recipe);
 		return {
 			...recipe._doc,
-			id: recipe._id.toString(),
+			_id: recipe._id.toString(),
 			createdAt: recipe.createdAt.toISOString(),
 			updatedAt: recipe.updatedAt.toISOString()
 		};
@@ -163,7 +162,7 @@ module.exports = {
 		// 		url: $url
 		// 		tags: $tags
 		// 	}){
-		// 		id
+		// 		_id
 		// 	}
 		// }
 		const recipe = await Recipe.findById(id);
@@ -178,7 +177,7 @@ module.exports = {
 		console.log('Recipe updated!');
 		return {
 			...updatedRecipe._doc,
-			id: updatedRecipe._id.toString(),
+			_id: updatedRecipe._id.toString(),
 			createdAt: updatedRecipe.createdAt.toISOString(),
 			updatedAt: updatedRecipe.updatedAt.toISOString()
 		};

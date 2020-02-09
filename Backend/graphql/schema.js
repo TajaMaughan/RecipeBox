@@ -2,7 +2,7 @@ const { buildSchema } = require('graphql');
 
 module.exports = buildSchema (`
 type User {
-  id: ID!
+  _id: ID!
   userName: String!
   email: String!
   password: String!
@@ -15,7 +15,7 @@ type AuthData {
 }
 
 type Recipe {
-    id: ID!
+    _id: ID!
     title: String!
     url: String!
     tags: String!
