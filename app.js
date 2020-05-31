@@ -1,57 +1,28 @@
-require('dotenv').config();
 const express = require('express');
-const graphqlHttp = require('express-graphql');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
+connectDB = require('./config/db');
+const path = require('path');
 
-const MONGODB_URI = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@cluster0-3oedr.mongodb.net/recipe-box?retryWrites=true&w=majority`;
-const PORT = process.env.port || 3000;
-
-const graphqlSchema = require('./graphql/schema');
-const graphqlResolver = require('./graphql/resolvers');
+const PORT = process.env.port || 5000;
 
 const app = express();
 
-app.use(bodyParser.json());
+// Connect to database
+connectDB();
 
-app.use((req, res, next) => {
-	res.setHeader('Access-Control-Allow-Origin', '*');
-	res.setHeader(
-		'Access-Control-Allow-Methods',
-		'OPTIONS, GET, POST, PUT, PATCH, DELETE'
+//Init Middleware
+app.use(express.json({ extended: false }));
+
+// Define routes
+app.use('/api/users', require('./routes/users'));
+
+// Serve static assets in production
+if (process.env.NODE_ENV === 'production') {
+	// Set static folder
+	app.use(express.static('client/build'));
+
+	app.get('*', (req, res) =>
+		res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
 	);
-	res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-	if (req.method === 'OPTIONS') {
-		return res.sendStatus(200);
-	}
-	next();
-});
+}
 
-app.use(
-	'/graphql',
-	graphqlHttp({ 
-		schema: graphqlSchema, 
-		rootValue: graphqlResolver, 
-		graphiql: true,
-		customFormatErrorFn(err) {
-			if (!err.originalError) {
-				return err;
-			}
-			const data = err.originalError.data;
-			const message = err.message || 'An error occurred.';
-			const code = err.originalError.code || 500;
-			return { message: message, status: code, data: data };
-		}
-	})
-);
-
-mongoose
-	.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
-	.then(result => {
-		console.log('Connected to database');
-		app.listen(PORT);
-		console.log(`Listening on port ${PORT}`);
-	})
-	.catch(err => {
-		console.log(err);
-	});
+app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
