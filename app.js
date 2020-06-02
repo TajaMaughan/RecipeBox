@@ -9,11 +9,12 @@ const app = express();
 // Connect to database
 connectDB();
 
-//Init Middleware
+// Middleware
 app.use(express.json({ extended: false }));
 
 // Define routes
 app.use('/api/users', require('./routes/users'));
+app.use('/api/auth', require('./routes/auth'));
 
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {

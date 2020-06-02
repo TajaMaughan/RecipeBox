@@ -7,9 +7,9 @@ const { check, validationResult } = require('express-validator');
 
 const User = require('../models/User');
 
-// @route POST api/users
-// @description Register a user
-// @access Public
+// Route -- POST api/users
+// Description -- Register a user
+// Access -- Public
 router.post(
 	'/',
 	[
@@ -56,13 +56,13 @@ router.post(
 				payload,
 				process.env.JWT_SECRET,
 				{ expiresIn: 360000 },
-				(err, token) => {
-					if (err) throw err;
-					res.json({ token });
+				(error, authToken) => {
+					if (error) throw err;
+					res.json({ authToken });
 				}
 			);
-		} catch (err) {
-			console.error(err.message);
+		} catch (error) {
+			console.error(error.message);
 			res.status(500).send('Server Error');
 		}
 	}
