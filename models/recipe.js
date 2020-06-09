@@ -13,11 +13,11 @@ const recipeSchema = new Schema(
 		// },
 		url: {
 			type: String,
-			require: true
+			required: true
 		},
 		tags: {
 			type: String,
-			required: true
+			required: false
 		},
 		user: {
 			type: Schema.Types.ObjectId,
