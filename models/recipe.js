@@ -15,10 +15,12 @@ const recipeSchema = new Schema(
 			type: String,
 			required: true
 		},
-		tags: {
-			type: String,
-			required: false
-		},
+		tags: [
+			{
+				type: String,
+				required: false
+			}
+		],
 		user: {
 			type: Schema.Types.ObjectId,
 			ref: 'User',
