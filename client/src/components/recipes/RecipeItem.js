@@ -8,7 +8,12 @@ const RecipeItem = ({ recipe }) => {
 			<div className="card red lighten-5">
 				<div className="card-content black-text">
 					<div className="card-title center">
-						<a href={url} target="_blank" className="cyan-text text-darken-4">
+						<a
+							href={url}
+							target="_blank"
+							rel="noopener noreferrer"
+							className="cyan-text text-darken-4"
+						>
 							{title}
 						</a>
 					</div>

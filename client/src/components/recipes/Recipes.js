@@ -1,6 +1,8 @@
 import React, { Fragment, useContext } from 'react';
 import RecipeContext from '../../context/recipe/recipeContext';
 import RecipeItem from './RecipeItem';
+import AddBtn from '../../components/layout/AddBtn';
+import AddRecipeModal from './AddRecipeModal';
 
 const Recipes = () => {
 	const recipeContext = useContext(RecipeContext);
@@ -8,7 +10,7 @@ const Recipes = () => {
 	const { recipes } = recipeContext;
 
 	return (
-		<Fragment>
+		<div>
 			<h3 className="center cyan-text text-darken-4">Recipes</h3>
 			<div className="divider"></div>
 			{recipes.map(recipe => (
@@ -16,7 +18,9 @@ const Recipes = () => {
 					<RecipeItem key={recipe.id} recipe={recipe} />
 				</div>
 			))}
-		</Fragment>
+			<AddBtn />
+			<AddRecipeModal />
+		</div>
 	);
 };
 
