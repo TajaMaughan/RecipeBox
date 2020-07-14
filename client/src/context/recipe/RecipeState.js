@@ -39,12 +39,16 @@ const RecipeState = props => {
 				url: 'https://sallysbakingaddiction.com/my-favorite-cornbread/',
 				tags: ['Side', 'Bread']
 			}
-		]
+		],
+		chip: ''
 	};
 
 	const [state, dispatch] = useReducer(recipeReducer, initialState);
 
 	// Add Recipe
+	const addRecipe = recipe => {
+		dispatch({ type: ADD_RECIPE, payload: recipe });
+	};
 
 	// Delete Recipe
 
@@ -61,7 +65,8 @@ const RecipeState = props => {
 	return (
 		<RecipeContext.Provider
 			value={{
-				recipes: state.recipes
+				recipes: state.recipes,
+				addRecipe
 			}}
 		>
 			{props.children}
